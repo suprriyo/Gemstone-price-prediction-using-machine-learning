@@ -1,71 +1,50 @@
-# this is my end to end project
+# Gemstone Price Prediction
 
-# first initialize the git
+## Introduction About the Data
+The goal is to predict the price of a given diamond (Regression Analysis).
 
-```
-git init
-```
+### Independent Variables
+- **id**: Unique identifier of each diamond
+- **carat**: Carat (ct.) refers to the unique unit of weight measurement used exclusively to weigh gemstones and diamonds.
+- **cut**: Quality of Diamond Cut
+- **color**: Color of Diamond
+- **clarity**: Diamond clarity is a measure of the purity and rarity of the stone, graded by the visibility of these characteristics under 10-power magnification.
+- **depth**: The depth of the diamond is its height (in millimeters) measured from the culet (bottom tip) to the table (flat, top surface)
+- **table**: A diamond's table is the facet that can be seen when the stone is viewed face up.
+- **x**: Diamond X dimension
+- **y**: Diamond Y dimension
+- **z**: Diamond Z dimension
 
-```
-git add abc.txt
-git add .
-```
-```
-git commit -m "this is my first commit"
-```
+### Target Variable
+- **price**: Price of the given Diamond.
 
-```
+For more details, check this link: [American Gem Society](https://www.americangemsociety.org)
 
-git pull
+## Approach for the Project
 
-```
+### 1. Data Ingestion
+- The data is first read as CSV.
+- The data is split into training and testing sets and saved as CSV files.
 
-```
-bash your_file_name.sh
-```
+### 2. Data Transformation
+- A `ColumnTransformer` Pipeline is created.
+  - For Numeric Variables: `SimpleImputer` with median strategy, followed by `StandardScaler`.
+  - For Categorical Variables: `SimpleImputer` with the most frequent strategy, followed by ordinal encoding, and then `StandardScaler`.
+- The preprocessor is saved as a pickle file.
 
-```
-python setup.py install
-```
+### 3. Model Training
+- Base models are tested, with the best being the CatBoost Regressor.
+- Hyperparameter tuning is performed on CatBoost and KNN models.
+- A final `VotingRegressor` is created, combining predictions of CatBoost, XGBoost, and KNN models.
+- This model is saved as a pickle file.
 
-# another way you can mention -e . in your requirement file and you can run
+### 4. Prediction Pipeline
+- Converts given data into a dataframe and has various functions to load pickle files and predict the final results in Python.
 
-```
-pip install -r requirements.txt
-```
+### 5. Flask App Creation
+- A Flask app is created with a User Interface to predict gemstone prices inside a Web Application.
 
+---
 
-## MLflow
-
-[Documentation](https://mlflow.org/docs/latest/index.html)
-
-
-##### local cmd
-- mlflow ui
-
-### dagshub
-[dagshub](https://dagshub.com/)
-
-MLFLOW_TRACKING_URI=https://dagshub.com/sunny.savita/fsdsmendtoend.mlflow \
-MLFLOW_TRACKING_USERNAME=sunny.savita \
-MLFLOW_TRACKING_PASSWORD=3c2c8cd1436ad32b510cfdd84944a528ba4fb650 \
-python script.py
-
-Run this to export as env variables:
-
-```bash
-
-export MLFLOW_TRACKING_URI=https://dagshub.com/sunny.savita/fsdsmendtoend.mlflow
-
-export MLFLOW_TRACKING_USERNAME=sunny.savita
-
-export MLFLOW_TRACKING_PASSWORD=3c2c8cd1436ad32b510cfdd84944a528ba4fb650
-
-```
-
-
-### DVC cmd
-- dvc init
-- dvc repro
-- dvc dag
+If you continue to encounter issues, try using `git pull --rebase` or `git push --force` commands as mentioned earlier with caution. If you have any other questions, feel free to ask!
 
